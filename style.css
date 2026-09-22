@@ -1,0 +1,40 @@
+/* Custom CSS per Piazze Siciliane */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #2b2d42;
+}
+
+h1, h2, h3, .font-heading {
+    font-family: 'Playfair Display', serif;
+}
+
+.hero-bg {
+    background: linear-gradient(180deg, rgba(10, 25, 47, 0.65) 0%, rgba(0, 31, 63, 0.85) 100%), 
+                url('../img/hero-pretoria.jpg') center/cover no-repeat;
+}
+
+.card-shadow {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.card-shadow:hover {
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.18);
+    transform: translateY(-5px);
+}
+
+/* Scrollbar personalizzata */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: #005f73;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #0a9396;
+}

@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piazze Siciliane | Cuore di Storia, Arte e Vita</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sicily: {
+                            blue: '#005f73',
+                            deepblue: '#0a9396',
+                            sand: '#e9d8a6',
+                            gold: '#ee9b00',
+                            terracotta: '#ca6702',
+                            rust: '#bb3e03',
+                            darkred: '#9b2226',
+                            lightbg: '#f8f9fa'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Poppins"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #2b2d42;
+        }
+        h1, h2, h3, .font-heading {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-bg {
+            background-color: #002b36;
+            background-image: linear-gradient(180deg, rgba(10, 25, 47, 0.75) 0%, rgba(0, 31, 63, 0.88) 100%), 
+                        url('img/hero-pretoria.jpg');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .card-shadow:hover {
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.18);
+            transform: translateY(-5px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #005f73;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0a9396;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-sicily-gold to-sicily-terracotta flex items-center justify-center text-white text-xl shadow-md group-hover:rotate-12 transition-transform">
+                        <i class="fa-solid font-bold">S</i>
+                    </div>
+                    <div>
+                        <span class="font-serif text-2xl font-bold tracking-tight text-gray-900 group-hover:text-sicily-blue transition-colors">Piazze<span class="text-sicily-terracotta">Siciliane</span></span>
+                        <span class="block text-[10px] tracking-widest text-gray-500 uppercase font-semibold">Patrimonio & Cultura</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="#piazze" class="text-gray-700 hover:text-sicily-blue font-medium transition-colors text-sm uppercase tracking-wider">Esplora Piazze</a>
+                    <a href="#mappa" class="text-gray-700 hover:text-sicily-blue font-medium transition-colors text-sm uppercase tracking-wider">Mappa Interattiva</a>
+                    <a href="#curiosita" class="text-gray-700 hover:text-sicily-blue font-medium transition-colors text-sm uppercase tracking-wider">Curiosità</a>
+                    <button onclick="showFavoritesModal()" class="flex items-center space-x-1 text-sicily-darkred bg-red-50 hover:bg-red-100 px-3 py-2 rounded-full font-medium transition-colors text-sm">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Preferiti</span>
+                        <span id="fav-count" class="ml-1 bg-sicily-darkred text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700 hover:text-sicily-blue focus:outline-none p-2">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Navigation Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-4 space-y-3">
+            <a href="#piazze" class="block text-gray-700 hover:text-sicily-blue font-medium py-2">Esplora Piazze</a>
+            <a href="#mappa" class="block text-gray-700 hover:text-sicily-blue font-medium py-2">Mappa Interattiva</a>
+            <a href="#curiosita" class="block text-gray-700 hover:text-sicily-blue font-medium py-2">Curiosità</a>
+            <button onclick="showFavoritesModal()" class="w-full text-left flex items-center justify-between text-sicily-darkred bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg font-medium">
+                <span>I Miei Preferiti</span>
+                <span id="mobile-fav-count" class="bg-sicily-darkred text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <section class="relative hero-bg text-white py-24 lg:py-32 flex items-center justify-center">
+            <div class="absolute inset-0 bg-black/30"></div>
+            <div class="relative z-10 max-w-5xl mx-auto px-4 text-center">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-sicily-gold/30 backdrop-blur-md border border-sicily-gold/50 text-sicily-sand text-xs font-semibold uppercase tracking-widest mb-4">
+                    <i class="fa-solid fa-sun mr-1"></i> Meraviglie architettoniche dell'Isola
+                </span>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+                    Piazze Siciliane <br>
+                    <span class="italic font-normal text-sicily-sand">Cuore di Storia, Arte e Vita</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-10 font-light leading-relaxed">
+                    Dai capolavori del Barocco di Noto e Ragusa Ibla ai monumenti specchio del mare a Siracusa e Taormina. Scopri l'anima vibrante delle Agorà della Sicilia.
+                </p>
+
+                <!-- Search and Quick Filter Bar -->
+                <div class="bg-white/95 backdrop-blur-md p-4 md:p-6 rounded-2xl shadow-2xl max-w-3xl mx-auto text-gray-800">
+                    <div class="flex flex-col md:flex-row gap-3">
+                        <div class="relative flex-grow">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="search-input" placeholder="Cerca una piazza o una città (es. Pretoria, Siracusa)..." 
+                                   class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sicily-blue focus:border-transparent outline-none transition-all">
+                        </div>
+                        <select id="style-filter" class="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sicily-blue outline-none cursor-pointer">
+                            <option value="all">Tutti gli stili</option>
+                            <option value="Barocco">Barocco</option>
+                            <option value="Arabo-Normanno">Arabo-Normanno</option>
+                            <option value="Rinascimentale">Rinascimentale</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-8 bg-white border-b border-gray-200 shadow-inner">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs uppercase tracking-widest text-gray-500 font-bold">Filtra per Città:</span>
+                </div>
+                <div id="city-buttons" class="flex flex-wrap gap-2 md:gap-3">
+                    <button data-city="all" class="city-btn active px-4 py-2 rounded-full text-sm font-semibold transition-all bg-sicily-blue text-white shadow-sm">
+                        Tutte le Città
+                    </button>
+                    <button data-city="Palermo" class="city-btn px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all">Palermo</button>
+                    <button data-city="Catania" class="city-btn px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all">Catania</button>
+                    <button data-city="Siracusa" class="city-btn px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all">Siracusa</button>
+                    <button data-city="Ragusa" class="city-btn px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all">Ragusa</button>
+                    <button data-city="Taormina" class="city-btn px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all">Taormina</button>
+                    <button data-city="Noto" class="city-btn px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all">Noto</button>
+                    <button data-city="Cefalù" class="city-btn px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all">Cefalù</button>
+                    <button data-city="Scicli" class="city-btn px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all">Scicli</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="piazze" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10">
+                <div>
+                    <span class="text-sicily-terracotta font-semibold uppercase tracking-wider text-sm">Catalogo Monumentale</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-1">Le Piazze Più Affascinanti</h2>
+                </div>
+                <p class="text-gray-500 text-sm mt-2 md:mt-0" id="result-count">Caricamento piazze...</p>
+            </div>
+
+            <!-- Card Grid Container -->
+            <div id="squares-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Javascript will render cards here dynamically -->
+            </div>
+
+            <!-- Empty State Container -->
+            <div id="empty-state" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-gray-300">
+                <i class="fa-solid fa-map-location-dot text-5xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-700">Nessuna piazza trovata</h3>
+                <p class="text-gray-500 mt-2">Prova a cambiare i filtri di ricerca o la città selezionata.</p>
+                <button onclick="resetFilters()" class="mt-4 px-5 py-2 bg-sicily-blue text-white rounded-lg font-medium hover:bg-sicily-deepblue transition-colors">
+                    Azzera Filtri
+                </button>
+            </div>
+        </section>
+
+        <section id="mappa" class="py-16 bg-gradient-to-b from-gray-900 to-sicily-blue text-white relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-sicily-gold font-semibold uppercase tracking-widest text-xs">Mappa Virtuale</span>
+                    <h2 class="text-3xl md:text-4xl font-bold mt-2">Esplora la Sicilia delle Piazze</h2>
+                    <p class="text-gray-300 mt-3 font-light">Seleziona una località sulla mappa concettuale per scoprirne subito il gioiello architettonico principale.</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <div onclick="filterByCityAndScroll('Palermo')" class="cursor-pointer bg-white/10 backdrop-blur-md border border-white/10 hover:border-sicily-gold p-4 rounded-xl text-center transition-all hover:-translate-y-2 group">
+                        <div class="w-12 h-12 rounded-full bg-sicily-gold/20 text-sicily-gold mx-auto flex items-center justify-center text-xl mb-3 group-hover:bg-sicily-gold group-hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-archway"></i>
+                        </div>
+                        <h4 class="font-bold text-lg">Palermo</h4>
+                        <span class="text-xs text-gray-300">Piazza Pretoria</span>
+                    </div>
+
+                    <div onclick="filterByCityAndScroll('Catania')" class="cursor-pointer bg-white/10 backdrop-blur-md border border-white/10 hover:border-sicily-gold p-4 rounded-xl text-center transition-all hover:-translate-y-2 group">
+                        <div class="w-12 h-12 rounded-full bg-sicily-gold/20 text-sicily-gold mx-auto flex items-center justify-center text-xl mb-3 group-hover:bg-sicily-gold group-hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-volcano"></i>
+                        </div>
+                        <h4 class="font-bold text-lg">Catania</h4>
+                        <span class="text-xs text-gray-300">Piazza del Duomo</span>
+                    </div>
+
+                    <div onclick="filterByCityAndScroll('Siracusa')" class="cursor-pointer bg-white/10 backdrop-blur-md border border-white/10 hover:border-sicily-gold p-4 rounded-xl text-center transition-all hover:-translate-y-2 group">
+                        <div class="w-12 h-12 rounded-full bg-sicily-gold/20 text-sicily-gold mx-auto flex items-center justify-center text-xl mb-3 group-hover:bg-sicily-gold group-hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-water"></i>
+                        </div>
+                        <h4 class="font-bold text-lg">Siracusa</h4>
+                        <span class="text-xs text-gray-300">Ortigia Duomo</span>
+                    </div>
+
+                    <div onclick="filterByCityAndScroll('Ragusa')" class="cursor-pointer bg-white/10 backdrop-blur-md border border-white/10 hover:border-sicily-gold p-4 rounded-xl text-center transition-all hover:-translate-y-2 group">
+                        <div class="w-12 h-12 rounded-full bg-sicily-gold/20 text-sicily-gold mx-auto flex items-center justify-center text-xl mb-3 group-hover:bg-sicily-gold group-hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-church"></i>
+                        </div>
+                        <h4 class="font-bold text-lg">Ragusa</h4>
+                        <span class="text-xs text-gray-300">Piazza Duomo Ibla</span>
+                    </div>
+
+                    <div onclick="filterByCityAndScroll('Taormina')" class="cursor-pointer bg-white/10 backdrop-blur-md border border-white/10 hover:border-sicily-gold p-4 rounded-xl text-center transition-all hover:-translate-y-2 group">
+                        <div class="w-12 h-12 rounded-full bg-sicily-gold/20 text-sicily-gold mx-auto flex items-center justify-center text-xl mb-3 group-hover:bg-sicily-gold group-hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <h4 class="font-bold text-lg">Taormina</h4>
+                        <span class="text-xs text-gray-300">Piazza IX Aprile</span>
+                    </div>
+
+                    <div onclick="filterByCityAndScroll('Noto')" class="cursor-pointer bg-white/10 backdrop-blur-md border border-white/10 hover:border-sicily-gold p-4 rounded-xl text-center transition-all hover:-translate-y-2 group">
+                        <div class="w-12 h-12 rounded-full bg-sicily-gold/20 text-sicily-gold mx-auto flex items-center justify-center text-xl mb-3 group-hover:bg-sicily-gold group-hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-gem text-sicily-gold"></i>
+                        </div>
+                        <h4 class="font-bold text-lg">Noto</h4>
+                        <span class="text-xs text-gray-300">Piazza Municipio</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="curiosita" class="py-20 bg-white border-t border-gray-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-sicily-terracotta font-semibold uppercase tracking-widest text-xs">Aneddoti e Leggende</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-2">Curiosità dalle Piazze Siciliane</h2>
+                    <p class="text-gray-600 mt-3">Ogni pietra e ogni fontana raccontano storie d'amore, misteri e divertenti soprannomi popolari.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Curiosità 1 -->
+                    <div class="bg-sicily-lightbg p-8 rounded-2xl border border-gray-100 relative group hover:border-sicily-gold transition-all">
+                        <div class="w-12 h-12 bg-sicily-gold/20 text-sicily-terracotta rounded-xl flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-masks-theater"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900">Perché "Piazza della Vergogna"?</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Piazza Pretoria a Palermo è nota a tutti i palermitani con questo nome. Il motivo? Le numerose statue nude di ninfe e divinità che circondano la fontana centrale, viste con scandalo dalle suore del vicino convento di clausura di Santa Caterina.
+                        </p>
+                    </div>
+
+                    <!-- Curiosità 2 -->
+                    <div class="bg-sicily-lightbg p-8 rounded-2xl border border-gray-100 relative group hover:border-sicily-blue transition-all">
+                        <div class="w-12 h-12 bg-sicily-blue/20 text-sicily-blue rounded-xl flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-elephant"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900">"Liotru", l'Elefante Protettore</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Al centro di Piazza del Duomo a Catania svetta l'Elefante di pietra lavica (u Liotru). La leggenda vuole che sia stato scolpito dal mago Eliodoro e che protegga la città catanese dalle eruzioni dell'Etna.
+                        </p>
+                    </div>
+
+                    <!-- Curiosità 3 -->
+                    <div class="bg-sicily-lightbg p-8 rounded-2xl border border-gray-100 relative group hover:border-sicily-rust transition-all">
+                        <div class="w-12 h-12 bg-sicily-rust/20 text-sicily-rust rounded-xl flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-chess-board"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900">Il Pavimento a Scacchiera</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Piazza IX Aprile a Taormina vanta una pavimentazione a scacchiera in pietra bianca e pietra lavica nera. Sospesa come una terrazza sul mare, regala una vista mozzafiato che spazia dall'Etna fino alla baia di Giardini Naxos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- DETAIL MODAL -->
+    <div id="detail-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl transform transition-all relative max-h-[90vh] flex flex-col">
+            <!-- Modal Header / Image Header -->
+            <div class="relative h-64 md:h-80 w-full shrink-0 bg-sicily-blue">
+                <img id="modal-img" src="" alt="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/80 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+                <div class="absolute bottom-6 left-6 right-6 text-white">
+                    <span id="modal-badge" class="px-3 py-1 bg-sicily-gold text-gray-900 font-bold text-xs rounded-full uppercase tracking-wider">Città</span>
+                    <h2 id="modal-title" class="text-3xl md:text-4xl font-bold mt-2">Nome Piazza</h2>
+                    <p id="modal-subtitle" class="text-gray-300 text-sm italic mt-1"><i class="fa-solid fa-location-dot mr-1"></i> Ubicazione</p>
+                </div>
+            </div>
+
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-6 md:p-8 overflow-y-auto space-y-6">
+                <!-- Metadata Pills -->
+                <div class="flex flex-wrap gap-4 p-4 bg-gray-50 rounded-xl text-sm border border-gray-100">
+                    <div>
+                        <span class="block text-xs text-gray-400 font-semibold uppercase">Stile Architettonico</span>
+                        <span id="modal-style" class="font-semibold text-gray-800">Barocco</span>
+                    </div>
+                    <div class="border-l border-gray-200 pl-4">
+                        <span class="block text-xs text-gray-400 font-semibold uppercase">Epoca / Secolo</span>
+                        <span id="modal-era" class="font-semibold text-gray-800">XVIII Secolo</span>
+                    </div>
+                    <div class="border-l border-gray-200 pl-4">
+                        <span class="block text-xs text-gray-400 font-semibold uppercase">Monumento Principale</span>
+                        <span id="modal-monument" class="font-semibold text-gray-800">Cattedrale</span>
+                    </div>
+                </div>
+
+                <!-- History -->
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Storia e Descrizione</h3>
+                    <p id="modal-history" class="text-gray-600 leading-relaxed font-light text-justify"></p>
+                </div>
+
+                <!-- Must See Highlights -->
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3"><i class="fa-solid fa-star text-sicily-gold mr-2"></i>Da Non Perdere</h3>
+                    <ul id="modal-highlights" class="space-y-2 text-gray-600 text-sm">
+                        <!-- Injected via Javascript -->
+                    </ul>
+                </div>
+
+                <!-- Actions -->
+                <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <button id="modal-fav-btn" class="w-full sm:w-auto px-6 py-3 rounded-xl border border-sicily-darkred text-sicily-darkred hover:bg-red-50 font-semibold transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-heart"></i> Salva tra i Preferiti
+                    </button>
+                    <a id="modal-gmaps" href="#" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-sicily-blue hover:bg-sicily-deepblue text-white rounded-xl font-semibold transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-map-location-dot"></i> Apri su Google Maps
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAVORITES MODAL -->
+    <div id="favorites-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 md:p-8 shadow-2xl relative max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+                <h3 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-sicily-darkred"></i> Le Tue Piazze Preferite
+                </h3>
+                <button onclick="closeFavoritesModal()" class="text-gray-400 hover:text-gray-700 text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="favorites-list" class="my-6 overflow-y-auto space-y-4 flex-grow">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <div class="pt-4 border-t border-gray-100 text-right">
+                <button onclick="closeFavoritesModal()" class="px-5 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-medium transition-colors">
+                    Chiudi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 text-white pt-16 pb-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <!-- Col 1 -->
+                <div class="space-y-4">
+                    <span class="font-serif text-2xl font-bold text-white">Piazze<span class="text-sicily-gold">Siciliane</span></span>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Un viaggio attraverso l'architettura, la storia e l'atmosfera senza tempo delle piazze più affascinanti della Sicilia.
+                    </p>
+                </div>
+                <!-- Col 2 -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4 text-sicily-sand">Città Principali</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#piazze" onclick="filterByCityAndScroll('Palermo')" class="hover:text-white transition-colors">Palermo</a></li>
+                        <li><a href="#piazze" onclick="filterByCityAndScroll('Catania')" class="hover:text-white transition-colors">Catania</a></li>
+                        <li><a href="#piazze" onclick="filterByCityAndScroll('Siracusa')" class="hover:text-white transition-colors">Siracusa (Ortigia)</a></li>
+                        <li><a href="#piazze" onclick="filterByCityAndScroll('Ragusa')" class="hover:text-white transition-colors">Ragusa Ibla</a></li>
+                    </ul>
+                </div>
+                <!-- Col 3 -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4 text-sicily-sand">Stili Architettonici</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#piazze" onclick="filterByStyle('Barocco')" class="hover:text-white transition-colors">Barocco Siciliano</a></li>
+                        <li><a href="#piazze" onclick="filterByStyle('Arabo-Normanno')" class="hover:text-white transition-colors">Stile Arabo-Normanno</a></li>
+                        <li><a href="#piazze" onclick="filterByStyle('Rinascimentale')" class="hover:text-white transition-colors">Rinascimentale</a></li>
+                    </ul>
+                </div>
+                <!-- Col 4 -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4 text-sicily-sand">Newsletter</h4>
+                    <p class="text-gray-400 text-sm mb-3">Iscriviti per ricevere guide e curiosità sulla Sicilia.</p>
+                    <form onsubmit="event.preventDefault(); alert('Grazie per esserti iscritto alla Newsletter!');" class="flex">
+                        <input type="email" placeholder="La tua email..." required class="px-3 py-2 bg-gray-800 text-white text-sm rounded-l-lg outline-none w-full border border-gray-700">
+                        <button type="submit" class="bg-sicily-terracotta hover:bg-sicily-rust text-white px-4 rounded-r-lg font-bold text-sm transition-colors">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 text-center text-xs text-gray-500">
+                <p>&copy; 2026 Piazze Siciliane - Guida Culturale e Turistica. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Database of Sicilian Squares pointing to local img/ folder with high quality fallback
+        const squaresData = [
+            {
+                id: 'palermo-pretoria',
+                title: 'Piazza Pretoria',
+                city: 'Palermo',
+                style: 'Rinascimentale',
+                era: 'XVI Secolo',
+                monument: 'Fontana Pretoria',
+                image: 'img/palermo-pretoria.jpg',
+                placeholder: 'https://images.unsplash.com/photo-1548625149-fc4a29cf7092?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Celebre per la monumentale Fontana Pretoria a più livelli, ricca di statue allegoriche e divinità pagane.',
+                fullHistory: `Piazza Pretoria si trova nel cuore del centro storico di Palermo, a pochi passi dai Quattro Canti. La spettacolare fontana centrale fu originariamente commissionata a Firenze nel 1554 dallo scultore Francesco Camilliani per la villa di Don Luigi di Toledo. Nel 1573 fu acquistata dal Senato Palermitano e trasportata pezzo per pezzo a Palermo. Per la presenza di maestose statue nude di ninfe, tritoni e dei dell'olimpo, la piazza fu confidenzialmente ribattezzata dai cittadini "Piazza della Vergogna".`,
+                highlights: [
+                    'La monumentale Fontana Pretoria con i suoi giochi d\'acqua e statue.',
+                    'Il Palazzo Pretorio (Palazzo delle Aquile), sede del Municipio di Palermo.',
+                    'La Chiesa di San Giuseppe dei Teatini che domina un angolo della piazza.'
+                ],
+                mapsUrl: 'https://maps.google.com/?q=Piazza+Pretoria+Palermo'
+            },
+            {
+                id: 'catania-duomo',
+                title: 'Piazza del Duomo',
+                city: 'Catania',
+                style: 'Barocco',
+                era: 'XVIII Secolo',
+                monument: 'Fontana dell\'Elefante',
+                image: 'img/catania-duomo.jpg',
+                placeholder: 'https://images.unsplash.com/photo-1584967918940-a7d51b064268?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Il cuore pulsante di Catania, dominato dalla magnificenza del Barocco in pietra lavica e dal leggendario Elefante.',
+                fullHistory: `Progettata dall'architetto Giovan Battista Vaccarini nell'ambito della ricostruzione seguita al devastante terremoto del 1693, Piazza del Duomo è un trionfo di eleganza barocca. Al centro svetta la Fontana dell'Elefante (u Liotru), simbolo iconico della città scolpito in pietra lavica di epoca romana, sormontato da un obelisco egizio. La piazza ospita inoltre la Cattedrale di Sant'Agata e il Palazzo degli Elefanti.`,
+                highlights: [
+                    'La Fontana dell\'Elefante (u Liotru), simbolo protettore della città.',
+                    'La Cattedrale di Sant\'Agata e la vicina Fontana dell\'Amenano.',
+                    'Il Palazzo degli Elefanti e il Palazzo dei Chierici.'
+                ],
+                mapsUrl: 'https://maps.google.com/?q=Piazza+del+Duomo+Catania'
+            },
+            {
+                id: 'siracusa-duomo',
+                title: 'Piazza del Duomo',
+                city: 'Siracusa',
+                style: 'Barocco',
+                era: 'V a.C. - XVIII Secolo',
+                monument: 'Cattedrale della Natività di Maria Santissima',
+                image: 'img/siracusa-duomo.jpg',
+                placeholder: 'https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Un ellisse d\'oro di pietra calcarea sull\'isola di Ortigia, incastonata tra palazzi barocchi e il Duomo.',
+                fullHistory: `Situata sulla parte più alta dell'isola di Ortigia a Siracusa, questa piazza scenografica presenta un'inconfondibile forma semiellittica. La pavimentazione lucida in pietra bianca riflette la luce solare rendendo la piazza un autentico salotto a cielo aperto. Il Duomo nasce sulla struttura dell'antico Tempio Greco di Atena (V secolo a.C.), le cui imponenti colonne doriche sono ancora chiaramente visibili integrate all'interno delle mura.`,
+                highlights: [
+                    'Il Duomo di Siracusa con facciata barocca e colonne doriche greche interne.',
+                    'Palazzo Vermexio (Sede del Comune) e Palazzo Beneventano del Bosco.',
+                    'La Chiesa di Santa Lucia alla Badia, custode di capolavori d\'arte.'
+                ],
+                mapsUrl: 'https://maps.google.com/?q=Piazza+del+Duomo+Siracusa'
+            },
+            {
+                id: 'taormina-9aprile',
+                title: 'Piazza IX Aprile',
+                city: 'Taormina',
+                style: 'Rinascimentale',
+                era: 'XV - XVII Secolo',
+                monument: 'Torre dell\'Orologio e Terrazza Belvedere',
+                image: 'img/taormina-9aprile.jpg',
+                placeholder: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Il salotto elegante di Taormina, celebre per la vista panoramica sul Mar Ionio e sul vulcano Etna.',
+                fullHistory: `Piazza IX Aprile prende il nome dal 9 aprile 1860, quando durante una messa nella cattedrale si sparse la voce falsa che Garibaldi fosse sbarcato a Marsala per liberare la Sicilia. La piazza è famosa in tutto il mondo per il suo caratteristico pavimento a scacchiera in pietra bianca e nera e per la balconata panoramica affacciata sull'azzurro del mare.`,
+                highlights: [
+                    'Il belvedere mozzafiato sulla baia e sull\'Etna.',
+                    'La Torre dell\'Orologio (Porta di Mezzo).',
+                    'La Chiesa barocca di San Giuseppe e la seicentesca ex Chiesa di Sant\'Agostino.'
+                ],
+                mapsUrl: 'https://maps.google.com/?q=Piazza+IX+Aprile+Taormina'
+            },
+            {
+                id: 'ragusa-duomo',
+                title: 'Piazza Duomo',
+                city: 'Ragusa',
+                style: 'Barocco',
+                era: 'XVIII Secolo',
+                monument: 'Duomo di San Giorgio',
+                image: 'img/ragusa-duomo.jpg',
+                placeholder: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Incastonata a Ragusa Ibla, una piazza in pendenza dominata dall\'imponente scalinata di San Giorgio.',
+                fullHistory: `Cuore pulsante del quartiere barocco di Ragusa Ibla, Piazza Duomo ha uno sviluppo allungato e leggermente in pendenza. Sulla sua sommità si erge il magnifico Duomo di San Giorgio, capolavoro dell'architetto Rosario Gagliardi. La maestosa facciata a torre-campanile domina l'intera piazza con un impatto visivo di straordinaria scenograficità.`,
+                highlights: [
+                    'La spettacolare facciata a "campanile" del Duomo di San Giorgio.',
+                    'I palazzi nobiliari con balconi sormontati da mascheroni e intagli barocchi.',
+                    'Gli eleganti caffè storici che circondano il perimetro.'
+                ],
+                mapsUrl: 'https://maps.google.com/?q=Piazza+Duomo+Ragusa+Ibla'
+            },
+            {
+                id: 'noto-municipio',
+                title: 'Piazza Municipio',
+                city: 'Noto',
+                style: 'Barocco',
+                era: 'XVIII Secolo',
+                monument: 'Cattedrale di San Nicolò e Palazzo Ducezio',
+                image: 'img/noto-municipio.jpg',
+                placeholder: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'La capitale del Barocco siciliano: una scenografia teatrale dorata scolpita nella pietra locale.',
+                fullHistory: `Piazza Municipio è lo snodo monumentale più importante di Noto, riedificata ex novo dopo il sisma del 1693. La pietra calcarea dorata utilizzata per gli edifici dona alla piazza un colore caldo e luminoso, specie all'ora del tramonto. Da un lato della piazza svetta la maestosa scalinata della Cattedrale di San Nicolò, mentre sul lato opposto si trova il curvo e armonioso Palazzo Ducezio.`,
+                highlights: [
+                    'La monumentale Cattedrale di San Nicolò con la sua vasta scalinata.',
+                    'Palazzo Ducezio con la sua elegante loggia ricurva.',
+                    'L\'inconfondibile luce dorata che avvolge gli edifici al tramonto.'
+                ],
+                mapsUrl: 'https://maps.google.com/?q=Piazza+Municipio+Noto'
+            },
+            {
+                id: 'cefalu-duomo',
+                title: 'Piazza del Duomo',
+                city: 'Cefalù',
+                style: 'Arabo-Normanno',
+                era: 'XII Secolo',
+                monument: 'Duomo di Cefalù',
+                image: 'img/cefalu-duomo.jpg',
+                placeholder: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Ombreggiata da palme e sovrastata dalla rocca imponente, ospita il celebre Duomo Normanno.',
+                fullHistory: `Adagiata ai piedi della maestosa rupe che domina Cefalù, la Piazza del Duomo è un'oasi di storia e fascino mediorientale. Fu fondata sotto il regno del re normanno Ruggero II attorno al 1131. La piazza si sviluppa attorno alla grande facciata del Duomo, affiancata da due potenti torri campanarie, creando un contrasto unico tra la roccia naturale e l'architettura sacra.`,
+                highlights: [
+                    'Il Duomo di Cefalù con all\'interno i celebri mosaici bizantini del Cristo Pantocratore.',
+                    'Palazzo Vescovile e il Palazzo Pirajno.',
+                    'La suggestiva presenza della parete rocciosa alle spalle della piazza.'
+                ],
+                mapsUrl: 'https://maps.google.com/?q=Piazza+Duomo+Cefalu'
+            },
+            {
+                id: 'scicli-busacca',
+                title: 'Piazza Italia / Busacca',
+                city: 'Scicli',
+                style: 'Barocco',
+                era: 'XVIII Secolo',
+                monument: 'Chiesa della Carmine e Palazzo Beneventano',
+                image: 'img/scicli-busacca.jpg',
+                placeholder: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Un gioiello incastonato nella Val di Noto, nota per l\'architettura tardo-barocca e per i set cinematografici.',
+                fullHistory: `Scicli vanta piazze ed angoli monumentali dichiarati Patrimonio dell'Umanità UNESCO. Piazza Busacca e la contigua Piazza Italia rappresentano il cuore sociale ed artistico della città. Famosa anche per essere stata scelta come set per celebri serie tv (come Il Commissario Montalbano), Scicli ammalia per l'armonia delle sue prospettive settecentesche.`,
+                highlights: [
+                    'La Chiesa e il Convento del Carmine.',
+                    'I vicini mascheroni grotteschi di Palazzo Beneventano.',
+                    'L\'atmosfera autentica e rilassata del barocco ibleo.'
+                ],
+                mapsUrl: 'https://maps.google.com/?q=Piazza+Busacca+Scicli'
+            }
+        ];
+
+        let favorites = [];
+        try {
+            favorites = JSON.parse(localStorage.getItem('sicilian_favorites') || '[]');
+        } catch(e) {
+            favorites = [];
+        }
+
+        let searchQuery = '';
+        let activeCity = 'all';
+        let activeStyle = 'all';
+
+        // DOM Element references
+        let squaresGrid, emptyState, resultCount, searchInput, styleFilter, cityButtons, mobileMenuBtn, mobileMenu;
+
+        function getFilteredSquares() {
+            return squaresData.filter(item => {
+                const matchesCity = activeCity === 'all' || item.city.toLowerCase() === activeCity.toLowerCase();
+                const matchesStyle = activeStyle === 'all' || item.style.toLowerCase() === activeStyle.toLowerCase();
+                const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.shortDesc.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCity && matchesStyle && matchesSearch;
+            });
+        }
+
+        function updateFavCount() {
+            const favCountEl = document.getElementById('fav-count');
+            const mobileFavCountEl = document.getElementById('mobile-fav-count');
+            if (favCountEl) favCountEl.textContent = favorites.length;
+            if (mobileFavCountEl) mobileFavCountEl.textContent = favorites.length;
+        }
+
+        function toggleFavorite(id, event) {
+            if (event) event.stopPropagation();
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id);
+            } else {
+                favorites.push(id);
+            }
+            try {
+                localStorage.setItem('sicilian_favorites', JSON.stringify(favorites));
+            } catch(e) {}
+            
+            updateFavCount();
+            renderCards();
+        }
+
+        function renderCards() {
+            squaresGrid = document.getElementById('squares-grid');
+            emptyState = document.getElementById('empty-state');
+            resultCount = document.getElementById('result-count');
+
+            if (!squaresGrid) return;
+            
+            const items = getFilteredSquares();
+            squaresGrid.innerHTML = '';
+
+            if (resultCount) {
+                resultCount.textContent = `Visualizzando ${items.length} di ${squaresData.length} piazze`;
+            }
+
+            if (items.length === 0) {
+                if (emptyState) emptyState.classList.remove('hidden');
+                squaresGrid.classList.add('hidden');
+                return;
+            }
+
+            if (emptyState) emptyState.classList.add('hidden');
+            squaresGrid.classList.remove('hidden');
+
+            items.forEach(item => {
+                const isFav = favorites.includes(item.id);
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-2xl overflow-hidden card-shadow flex flex-col border border-gray-100 transition-all';
+
+                card.innerHTML = `
+                    <div class="relative h-52 bg-gray-100 overflow-hidden group cursor-pointer" onclick="openModal('${item.id}')">
+                        <img src="${item.image}" alt="${item.title}" 
+                             onerror="this.onerror=null; this.src='${item.placeholder}';"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-sicily-blue text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                            ${item.city}
+                        </span>
+                        <button onclick="toggleFavorite('${item.id}', event)" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-sicily-darkred hover:bg-white transition-colors shadow-sm">
+                            <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 text-xs text-gray-500 font-semibold mb-2">
+                                <span class="text-sicily-terracotta"><i class="fa-solid fa-monument mr-1"></i>${item.style}</span>
+                                <span>•</span>
+                                <span>${item.era}</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2 font-heading cursor-pointer hover:text-sicily-blue transition-colors" onclick="openModal('${item.id}')">${item.title}</h3>
+                            <p class="text-gray-600 text-sm font-light leading-relaxed mb-4">${item.shortDesc}</p>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                            <span class="text-xs text-gray-500"><i class="fa-solid fa-landmark text-gray-400 mr-1"></i>${item.monument}</span>
+                            <button onclick="openModal('${item.id}')" class="text-sicily-blue hover:text-sicily-deepblue font-semibold text-sm flex items-center gap-1 transition-colors">
+                                Scopri <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                squaresGrid.appendChild(card);
+            });
+        }
+
+        function openModal(id) {
+            const item = squaresData.find(s => s.id === id);
+            if (!item) return;
+
+            const modalImg = document.getElementById('modal-img');
+            modalImg.onerror = function() {
+                this.onerror = null;
+                this.src = item.placeholder;
+            };
+            modalImg.src = item.image;
+
+            document.getElementById('modal-title').textContent = item.title;
+            document.getElementById('modal-subtitle').innerHTML = `<i class="fa-solid fa-location-dot mr-1"></i> ${item.city}, Sicilia`;
+            document.getElementById('modal-badge').textContent = item.city;
+            document.getElementById('modal-style').textContent = item.style;
+            document.getElementById('modal-era').textContent = item.era;
+            document.getElementById('modal-monument').textContent = item.monument;
+            document.getElementById('modal-history').textContent = item.fullHistory;
+            document.getElementById('modal-gmaps').href = item.mapsUrl;
+
+            // Highlights
+            const highlightsList = document.getElementById('modal-highlights');
+            highlightsList.innerHTML = '';
+            item.highlights.forEach(h => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start gap-2';
+                li.innerHTML = `<i class="fa-solid fa-circle-check text-sicily-deepblue mt-1"></i> <span>${h}</span>`;
+                highlightsList.appendChild(li);
+            });
+
+            // Favorite Button state in modal
+            const favBtn = document.getElementById('modal-fav-btn');
+            const isFav = favorites.includes(item.id);
+            favBtn.innerHTML = `<i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart"></i> ${isFav ? 'Rimuovi dai Preferiti' : 'Salva tra i Preferiti'}`;
+            favBtn.onclick = () => {
+                toggleFavorite(item.id);
+                openModal(item.id);
+            };
+
+            document.getElementById('detail-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function showFavoritesModal() {
+            const favList = document.getElementById('favorites-list');
+            if (!favList) return;
+            favList.innerHTML = '';
+
+            if (favorites.length === 0) {
+                favList.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fa-regular fa-heart text-4xl mb-3 text-gray-300"></i>
+                        <p>Non hai ancora aggiunto nessuna piazza ai preferiti.</p>
+                    </div>
+                `;
+            } else {
+                favorites.forEach(id => {
+                    const item = squaresData.find(s => s.id === id);
+                    if (!item) return;
+
+                    const row = document.createElement('div');
+                    row.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100';
+                    row.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <img src="${item.image}" alt="${item.title}" 
+                                 onerror="this.onerror=null; this.src='${item.placeholder}';"
+                                 class="w-12 h-12 rounded-lg object-cover bg-gray-200">
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm">${item.title}</h4>
+                                <span class="text-xs text-gray-500">${item.city}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="openModal('${item.id}'); closeFavoritesModal();" class="text-xs bg-sicily-blue text-white px-3 py-1.5 rounded-lg font-medium">Visualizza</button>
+                            <button onclick="toggleFavorite('${item.id}'); showFavoritesModal();" class="text-red-500 hover:text-red-700 p-2"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                    favList.appendChild(row);
+                });
+            }
+
+            document.getElementById('favorites-modal').classList.remove('hidden');
+        }
+
+        function closeFavoritesModal() {
+            document.getElementById('favorites-modal').classList.add('hidden');
+        }
+
+        function resetFilters() {
+            searchQuery = '';
+            activeCity = 'all';
+            activeStyle = 'all';
+            
+            if (searchInput) searchInput.value = '';
+            if (styleFilter) styleFilter.value = 'all';
+
+            const buttons = document.querySelectorAll('.city-btn');
+            buttons.forEach(b => {
+                b.classList.remove('bg-sicily-blue', 'text-white');
+                b.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            if (buttons[0]) {
+                buttons[0].classList.remove('bg-gray-100', 'text-gray-700');
+                buttons[0].classList.add('bg-sicily-blue', 'text-white');
+            }
+
+            renderCards();
+        }
+
+        function filterByCity(cityName) {
+            activeCity = cityName;
+            renderCards();
+        }
+
+        function filterByStyle(styleName) {
+            activeStyle = styleName;
+            styleFilter = document.getElementById('style-filter');
+            if (styleFilter) styleFilter.value = styleName;
+            renderCards();
+        }
+
+        function filterByCityAndScroll(cityName) {
+            filterByCity(cityName);
+            
+            const buttons = document.querySelectorAll('.city-btn');
+            buttons.forEach(b => {
+                if (b.getAttribute('data-city').toLowerCase() === cityName.toLowerCase()) {
+                    b.classList.remove('bg-gray-100', 'text-gray-700');
+                    b.classList.add('bg-sicily-blue', 'text-white');
+                } else {
+                    b.classList.remove('bg-sicily-blue', 'text-white');
+                    b.classList.add('bg-gray-100', 'text-gray-700');
+                }
+            });
+
+            const targetElem = document.getElementById('piazze');
+            if (targetElem) {
+                targetElem.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Bind DOM inputs
+            searchInput = document.getElementById('search-input');
+            styleFilter = document.getElementById('style-filter');
+            cityButtons = document.querySelectorAll('.city-btn');
+            mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            mobileMenu = document.getElementById('mobile-menu');
+
+            // Search input binding
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    searchQuery = e.target.value;
+                    renderCards();
+                });
+            }
+
+            // Style filter binding
+            if (styleFilter) {
+                styleFilter.addEventListener('change', (e) => {
+                    activeStyle = e.target.value;
+                    renderCards();
+                });
+            }
+
+            // City filter buttons binding
+            cityButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    cityButtons.forEach(b => {
+                        b.classList.remove('bg-sicily-blue', 'text-white');
+                        b.classList.add('bg-gray-100', 'text-gray-700');
+                    });
+                    btn.classList.remove('bg-gray-100', 'text-gray-700');
+                    btn.classList.add('bg-sicily-blue', 'text-white');
+
+                    activeCity = btn.getAttribute('data-city');
+                    renderCards();
+                });
+            });
+
+            // Mobile menu toggle
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Close modals when clicking outside container
+            window.addEventListener('click', (e) => {
+                const detailModal = document.getElementById('detail-modal');
+                const favModal = document.getElementById('favorites-modal');
+                if (e.target === detailModal) closeModal();
+                if (e.target === favModal) closeFavoritesModal();
+            });
+
+            // Initial render
+            updateFavCount();
+            renderCards();
+        });
+    </script>
+</body>
+</html>
